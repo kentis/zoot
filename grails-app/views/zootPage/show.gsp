@@ -30,13 +30,6 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name">Position:</td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean:zootPage, field:'_position')}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
                             <td valign="top" class="name">Author:</td>
                             
                             <td valign="top" class="value">${fieldValue(bean:zootPage, field:'author')}</td>

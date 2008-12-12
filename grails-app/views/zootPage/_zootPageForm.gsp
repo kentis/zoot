@@ -22,7 +22,7 @@
                                 </td>
                             </tr> 
                         
-                                                    
+                            <g:if test="${!zootPage?.id}">                        
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="parent">Parent:</label>
@@ -31,7 +31,7 @@
                                     <g:select optionKey="id" from="${ZootPage.list()}" name="parent.id" value="${zootPage?.parent?.id}" ></g:select>
                                 </td>
                             </tr> 
-                        
+                        		</g:if>
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="slug">Slug:</label>
@@ -55,7 +55,7 @@
                                     <label for="body">Body:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:zootPage,field:'body','errors')}">
-                                    <g:textArea id="body" name="body" rows="80" cols="60">${fieldValue(bean:zootPage,field:'body')}</g:textArea>
+                                    <g:textArea id="body" name="body" rows="80" cols="60" value="${zootPage.body}" />
                                 </td>
                             </tr> 
                         
@@ -71,4 +71,3 @@
                         </tbody>
                     </table>
                 </div>
-
