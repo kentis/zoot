@@ -1,6 +1,5 @@
 class ZootPage {
 	static final filters = ["gsp"]
- /** fields and constraints are shamelessly stolen from comatose **/
  //String full_path --nyi
  String title
  String slug
