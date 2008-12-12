@@ -64,7 +64,7 @@
                                     <label for="filter_type">Filtertype:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:zootPage,field:'filter_type','errors')}">
-                                    <input type="text" id="filter_type" name="filter_type" value="${fieldValue(bean:zootPage,field:'filter_type')}"/>
+																		<g:select from="${ZootPage.filters}" name="filter_type" value="${zootPage.filter_type}"></g:select>
                                 </td>
                             </tr> 
 

@@ -1,4 +1,5 @@
 class ZootPage {
+	static final filters = ["gsp"]
  /** fields and constraints are shamelessly stolen from comatose **/
  //String full_path --nyi
  String title
@@ -24,7 +25,8 @@ class ZootPage {
 							slug(nullable:true)
 							keywords(nullable: true)
 							body(nullable:true)
-							} 
+							filter_type(inList: ZootPage.filters)
+					} 
 
 	/*** utlitiy mehtods **/
  	static ZootPage findPageByPath(path, parentPage = ZootPage.getRoot() ){
