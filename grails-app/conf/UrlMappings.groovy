@@ -6,5 +6,8 @@ class UrlMappings {
 		  }
 	  }
 	  "500"(view:'/error')
+
+		"/zoot/$path**"(controller: "zootPage", action: "show", plugin: "zoot")
+		
 	}
 }
