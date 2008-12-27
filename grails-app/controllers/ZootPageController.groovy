@@ -3,6 +3,8 @@ import groovy.text.Template
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest
 import org.codehaus.groovy.grails.web.pages.GSPResponseWriter
 import org.springframework.web.context.request.RequestContextHolder
+import grails.converters.deep.*
+
 class ZootPageController {
     def groovyPagesTemplateEngine
     def index = { redirect(action:list,params:params) }
@@ -12,8 +14,41 @@ class ZootPageController {
 
     def list = {
 				def root = ZootPage.getRoot()
-        return (root ? [ zootPageList: [root] ] :   [ zootPageList: [] ])
+	      withFormat{
+					xhtml{
+						return (root ? [ zootPageList: [root] ] :   [ zootPageList: [] ])
+					}
+					html{
+						return (root ? [ zootPageList: [root] ] :   [ zootPageList: [] ])
+					}
+					xml{
+						render root as XML
+					}
+				}
     }
+
+		def imp = {
+			switch(request.method){
+				case "GET":
+				break
+				case "POST":
+					//request.content = request.getFile('file').inputStream.text.bytes
+					def page = new ZootPage()
+					xml = new XmlParser().parseText(request.getFile('file').inputStream.text)
+					def
+					println page
+					println page.children
+					//def xml = XmlSlurper.parseText(request.getFile('file').inputStream.text)
+					//println xml
+					redirect(action:list)
+				break
+				
+			}
+		}
+
+		def xml_to_page_tree(xml, page){
+
+		}
 
     def show = {
 				println "showing zootPage $params.path"
