@@ -21,9 +21,6 @@
 										<g:render template="zootPage_list" model="[zootPageList: zootPageList]" plugin="zoot"/>
 								</ul>					
             </div>
-            <div class="paginateButtons">
-                <g:paginate total="${ZootPage.count()}" />
-            </div>
         </div>
     </body>
 </html>

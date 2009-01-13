@@ -34,10 +34,18 @@ class ZootPageController {
 				case "POST":
 					//request.content = request.getFile('file').inputStream.text.bytes
 					def page = new ZootPage()
-					xml = new XmlParser().parseText(request.getFile('file').inputStream.text)
-					def
+					def xml = new XmlParser().parseText(request.getFile('file').inputStream.text)
+					ZootPage.xmlToPageTree(xml, page)
 					println page
 					println page.children
+					println page.validate()
+					page.parent = ZootPage.getRoot()
+					if(! page.save() ) {
+						page.errors.each {
+							println it
+						}
+					}
+					page.saveTheChildren()
 					//def xml = XmlSlurper.parseText(request.getFile('file').inputStream.text)
 					//println xml
 					redirect(action:list)
