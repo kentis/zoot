@@ -1,5 +1,5 @@
 class ZootPage {
-	static final filters = ["gsp"]
+	static final filters = ["gsp","markdown"]
  //String full_path --nyi
  String title
  String slug

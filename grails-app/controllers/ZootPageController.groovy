@@ -3,6 +3,7 @@ import groovy.text.Template
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest
 import org.codehaus.groovy.grails.web.pages.GSPResponseWriter
 import org.springframework.web.context.request.RequestContextHolder
+import com.petebevin.markdown.MarkdownProcessor
 import grails.converters.deep.*
 
 class ZootPageController {
@@ -70,17 +71,20 @@ class ZootPageController {
 						render "Zoot page not found for path ${params.path}"
         }
         else {
-					//def templateEngine = new GroovyPagesTemplateEngine(context)
-					Template templ = groovyPagesTemplateEngine.createTemplate(zootPage.body, zootPage.title)
-					//def resp = new StringWriter()
-					//templ.make([page: zootPage]).writeTo(resp)
-					Writer out = GSPResponseWriter.getInstance(response, 8024);
-	        GrailsWebRequest webRequest =  (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();
-  	      webRequest.setOut(out);
-					templ.make([page: zootPage]).writeTo(out)
-					out.close()
-//					println resp.toString()
-					render ""
+					switch(zootPage.filter_type) {
+						case "gsp":
+							Template templ = groovyPagesTemplateEngine.createTemplate(zootPage.body, zootPage.title)
+							Writer out = GSPResponseWriter.getInstance(response, 8024);
+			        GrailsWebRequest webRequest =  (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();
+  			      webRequest.setOut(out);
+							templ.make([page: zootPage]).writeTo(out)
+							out.close()
+							render ""
+							break
+					case "markdown":
+						render new MarkdownProcessor().markdown(zootPage.body)
+						break
+					}
 				}
     }
 
