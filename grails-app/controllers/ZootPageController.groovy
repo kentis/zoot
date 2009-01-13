@@ -82,7 +82,8 @@ class ZootPageController {
 							render ""
 							break
 					case "markdown":
-						render new MarkdownProcessor().markdown(zootPage.body)
+						def html = new MarkdownProcessor().markdown(zootPage.body)
+						render(view: "generic_page", model: [title: zootPage.title, body: html] )
 						break
 					}
 				}
