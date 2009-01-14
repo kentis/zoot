@@ -32,6 +32,12 @@
                     <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
                 </div>
             </g:form>
+						<h2>Previous revisions</h2>
+						<ul class="revisions">
+							<g:each in="${zootPage.revisions}">
+								<li>${it.toString()}</li>
+							</g:each>
+						</ul>
         </div>
     </body>
 </html>

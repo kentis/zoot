@@ -6,6 +6,7 @@
   <documentation>http://grails.org/Zoot+Plugin</documentation>
   <resources>
     <resource>ZootPage</resource>
+    <resource>ZootPageRevision</resource>
     <resource>UrlMappings</resource>
     <resource>DataSource</resource>
     <resource>ZootPageController</resource>

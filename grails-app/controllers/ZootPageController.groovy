@@ -104,7 +104,7 @@ class ZootPageController {
 
     def edit = {
         def zootPage = ZootPage.get( params.id )
-				
+				println zootPage.revisions
         if(!zootPage) {
             flash.message = "ZootPage not found with id ${params.id}"
             redirect(action:list)
@@ -119,8 +119,10 @@ class ZootPageController {
 				println "updating page: ${params}"
         def zootPage = ZootPage.get( params.id )
         if(zootPage) {
+						def revision = new ZootPageRevision(zootPage)
             zootPage.properties = params
             if(!zootPage.hasErrors() && zootPage.save()) {
+								revision.save()
                 flash.message = "ZootPage ${params.id} updated"
                 redirect(action:list)
             }

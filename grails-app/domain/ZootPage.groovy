@@ -16,7 +16,7 @@ class ZootPage {
 
  /** hierarcical */
  ZootPage parent 
- static hasMany = [children: ZootPage] 
+ static hasMany = [children: ZootPage, revisions: ZootPageRevision] 
  
  //static fetchMode = [children:"eager"]
  static constraints = { 
