@@ -7,11 +7,21 @@ import com.petebevin.markdown.MarkdownProcessor
 import grails.converters.deep.*
 
 class ZootPageController {
+		def authenticationService
     def groovyPagesTemplateEngine
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
+		def beforeInterceptor = [action:this.&auth,except:'show']
+
+		def auth() {
+			if(authenticationService) {
+				if (!authenticationService.isLoggedIn(request)) {
+             response.sendError(403)
+	   		}
+			}
+		}
 
     def list = {
 				def root = ZootPage.getRoot()
@@ -53,10 +63,6 @@ class ZootPageController {
 				break
 				
 			}
-		}
-
-		def xml_to_page_tree(xml, page){
-
 		}
 
     def show = {
