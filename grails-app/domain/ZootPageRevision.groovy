@@ -3,6 +3,7 @@ class ZootPageRevision {
  String title
  String slug
  String keywords
+ String ingres
  String body
  String filter_type 
  String author
@@ -18,6 +19,7 @@ class ZootPageRevision {
 		slug(nullable:true)
 		keywords(nullable: true)
 		body(nullable:true)
+		ingres(nullable:true)
 		filter_type(inList: ZootPage.filters)
 	} 
 	

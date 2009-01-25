@@ -14,7 +14,10 @@ class ZootPageController {
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 		def beforeInterceptor = [action:this.&auth,except:'show']
-
+		def afterInterceptor = { model ->
+			model["root"] = ZootPage.getRoot()
+		}
+	
 		def auth() {
 			if(authenticationService) {
 				if (!authenticationService.isLoggedIn(request)) {
@@ -25,6 +28,12 @@ class ZootPageController {
 
     def list = {
 				def root = ZootPage.getRoot()
+				println "list: children: ${root.children.size()}"
+				def childsOfRoot = ZootPage.findAllByParent(root)
+				println "list: childs of root: ${childsOfRoot.size()}"
+				childsOfRoot.each{
+						println "\t${it.id}\t${it.title}\t${it.parent.id}"
+				}
 	      withFormat{
 					xhtml{
 						return (root ? [ zootPageList: [root] ] :   [ zootPageList: [] ])
@@ -59,6 +68,10 @@ class ZootPageController {
 					page.saveTheChildren()
 					//def xml = XmlSlurper.parseText(request.getFile('file').inputStream.text)
 					//println xml
+					println "save ${page.title} with ${page.children.size()} children"
+					page.children.each{
+						println "\t${it.id}\t${it.title}\t${it.parent.id}"
+					}
 					redirect(action:list)
 				break
 				
@@ -69,7 +82,7 @@ class ZootPageController {
 				println "showing zootPage $params.path"
 				def zootPage = null
         if(params.path) zootPage = ZootPage.findPageByPath(params.path)
-				if(!zootPage && params.id) zootPage = ZootPage.get( params.id )
+				if(!zootPage && params.id) zootPage = ZootPage.get( params.id.toInteger() )
 				if(!zootPage && !params.path && !params.id) zootPage = ZootPage.getRoot()
 
         if(!zootPage) {

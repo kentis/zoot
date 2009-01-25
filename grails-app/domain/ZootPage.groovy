@@ -4,6 +4,7 @@ class ZootPage {
  String title
  String slug
  String keywords
+ String ingres
  String body
  String filter_type = "gsp"
  String author
@@ -11,23 +12,34 @@ class ZootPage {
  // Long current_version  -- versions not yet supported.
  Date dateCreated
  Date lastUpdated
- 
+ Set children
 
 
  /** hierarcical */
  ZootPage parent 
- static hasMany = [children: ZootPage, revisions: ZootPageRevision] 
- 
- //static fetchMode = [children:"eager"]
+ static hasMany = [ revisions: ZootPageRevision] 
+ static transients = [ "children" ]
+
+ static fetchMode = [children:"eager"]
  static constraints = { 
 							parent(nullable: true) 
 							slug(nullable:true)
 							keywords(nullable: true)
+							ingres(nullable:true)
 							body(nullable:true)
 							filter_type(inList: ZootPage.filters)
 							//id(unique: true, nullable: false)
 					} 
-		
+
+	/**
+	* terrible hack to resolve problems that seem to be a bug in the handleing og hasMany.
+	* This will hopefully not be nessesary anymore in grail 1.1
+	*/
+	def onLoad = {
+		this.children = ZootPage.findAllByParent(this)
+	}
+
+
 	/*** utlitiy mehtods **/
  static ZootPage findPageByPath(path, parentPage = ZootPage.getRoot() ){
 		if(parentPage == null) return null
@@ -59,10 +71,17 @@ class ZootPage {
 	}
 
 	void saveTheChildren() {
-		this.children.each {
+		println "${this.title} has ${this.children?.size()} children"
+		this.children.each { 
 			it.parent = this
-			it.save()
+			if(! it.save() ) {
+				println "error saving ${it.title}"
+        page.errors.each { err ->
+         	println err
+      	}
+      }
 			it.saveTheChildren()
+			//this.addToChildren(it)
 		}
 	}
 
@@ -77,13 +96,21 @@ class ZootPage {
 						this."${it.name()}" = it.text()
 						break
 					case 'java.util.Set':
-						def set = [] as Set
-						it.each { child -> 
-							def page = new ZootPage()
-						  ZootPage.xmlToPageTree(child, page)
-							set << page
+						switch(it.name()) {
+							case 'children':
+								def set = [] as Set
+								it.each { child -> 
+									def page = new ZootPage()
+								  ZootPage.xmlToPageTree(child, page)
+                  //this.addToChildren(page)
+									set << page
+								}
+								this."${it.name()}" = set
+								break
+							case 'revisions':
+									//ignore for now
+							break
 						}
-						this."${it.name()}" = set
 						break
 					case 'java.util.Date':
 						this."${it.name()}" = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(it.text())
