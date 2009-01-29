@@ -13,7 +13,7 @@ class ZootPageController {
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST']
+    def allowedMethods = [delete:'POST', save:'POST', update:'POST', render:'POST']
 		def beforeInterceptor = [action:this.&auth,except:'show']
 		def afterInterceptor = { model ->
 			model["root"] = ZootPage.getRoot()
@@ -80,7 +80,6 @@ class ZootPageController {
 		}
 
     def show = {
-				println "showing zootPage $params.path"
 				def zootPage = null
         if(params.path) zootPage = ZootPage.findPageByPath(params.path)
 				if(!zootPage && params.id) zootPage = ZootPage.get( params.id.toInteger() )
@@ -91,29 +90,30 @@ class ZootPageController {
 						render "Zoot page not found for path ${params.path}"
         }
         else {
-					switch(zootPage.filter_type) {
-						case "gsp":
-							Template templ = groovyPagesTemplateEngine.createTemplate(zootPage.body, zootPage.title);
-							/*Writer out = GSPResponseWriter.getInstance(response, 8024);
-			        GrailsWebRequest webRequest =  (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();
-							webRequest.getParams().put("page", zootPage);
-							webRequest.getParams().put("root",ZootPage.getRoot());
-  			      webRequest.setOut(out);*/
-							StringWriter writer = new StringWriter();
-							templ.make([page: zootPage, root: ZootPage.getRoot()]).writeTo(writer);
-							render(view: "generic_page", model: [title: zootPage.title, body: writer.toString(), page: zootPage, root: ZootPage.getRoot()] )
-							//out.close();
-							//render ""
-							break
-					case "html":
-							render(view: "generic_page", model: [title: zootPage.title, body: zootPage.body, page: zootPage, root: ZootPage.getRoot()] )
-					case "markdown":
-						def html = new MarkdownProcessor().markdown(zootPage.body)
-						render(view: "generic_page", model: [title: zootPage.title, body: html] )
-						break
-					}
+					render(view: "generic_page", model: [title: zootPage.title, body: renderBody(zootPage.body, zootPage.title, zootPage.filter_type,  groovyPagesTemplateEngine, zootPage), page: zootPage, root: ZootPage.getRoot()] )
 				}
     }
+
+		def render = {
+			render(view: "generic_page", model: [title: params.title, body: renderBody( params.body, params.title, params.filter_type,  groovyPagesTemplateEngine), page: null, root: ZootPage.getRoot()] )
+		}
+
+		String renderBody(String body, String title, String type, Object templEngine, ZootPage zootPage = null){
+			switch(type) {
+				case "gsp":
+					Template templ = templEngine.createTemplate(body, title);
+					StringWriter writer = new StringWriter();
+					templ.make([page: zootPage, root: ZootPage.getRoot()]).writeTo(writer);
+					return writer.toString()
+					break
+				case "html":
+						return  body
+				case "markdown":
+					return new MarkdownProcessor().markdown(body)
+					break
+				}
+				return null
+		}
 
     def delete = {
         def zootPage = ZootPage.get( params.id )
