@@ -16,7 +16,7 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-            <div class="list">${zootPageList[0].children.size()}
+            <div class="list">
 								<ul class="page-list">
 										<g:render template="zootPage_list" model="[zootPageList: zootPageList]" plugin="zoot"/>
 								</ul>					

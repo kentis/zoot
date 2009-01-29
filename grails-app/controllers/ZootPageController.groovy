@@ -4,7 +4,8 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest
 import org.codehaus.groovy.grails.web.pages.GSPResponseWriter
 import org.springframework.web.context.request.RequestContextHolder
 import com.petebevin.markdown.MarkdownProcessor
-import grails.converters.deep.*
+import grails.converters.deep.JSON
+import no.machina.zoot.converters.XML
 
 class ZootPageController {
 		def authenticationService
@@ -92,14 +93,20 @@ class ZootPageController {
         else {
 					switch(zootPage.filter_type) {
 						case "gsp":
-							Template templ = groovyPagesTemplateEngine.createTemplate(zootPage.body, zootPage.title)
-							Writer out = GSPResponseWriter.getInstance(response, 8024);
+							Template templ = groovyPagesTemplateEngine.createTemplate(zootPage.body, zootPage.title);
+							/*Writer out = GSPResponseWriter.getInstance(response, 8024);
 			        GrailsWebRequest webRequest =  (GrailsWebRequest) RequestContextHolder.currentRequestAttributes();
-  			      webRequest.setOut(out);
-							templ.make([page: zootPage]).writeTo(out)
-							out.close()
-							render ""
+							webRequest.getParams().put("page", zootPage);
+							webRequest.getParams().put("root",ZootPage.getRoot());
+  			      webRequest.setOut(out);*/
+							StringWriter writer = new StringWriter();
+							templ.make([page: zootPage, root: ZootPage.getRoot()]).writeTo(writer);
+							render(view: "generic_page", model: [title: zootPage.title, body: writer.toString(), page: zootPage, root: ZootPage.getRoot()] )
+							//out.close();
+							//render ""
 							break
+					case "html":
+							render(view: "generic_page", model: [title: zootPage.title, body: zootPage.body, page: zootPage, root: ZootPage.getRoot()] )
 					case "markdown":
 						def html = new MarkdownProcessor().markdown(zootPage.body)
 						render(view: "generic_page", model: [title: zootPage.title, body: html] )

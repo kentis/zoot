@@ -96,9 +96,10 @@ class ZootPage {
 						this."${it.name()}" = it.text()
 						break
 					case 'java.util.Set':
+					case 'java.util.List':
 						switch(it.name()) {
 							case 'children':
-								def set = [] as Set
+								def set = [] as List
 								it.each { child -> 
 									def page = new ZootPage()
 								  ZootPage.xmlToPageTree(child, page)
