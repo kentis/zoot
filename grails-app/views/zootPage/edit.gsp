@@ -5,6 +5,23 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
         <title>Edit ZootPage</title>
+				<g:javascript library="prototype" />
+				<script type="text/javascript">
+					function pw() {
+						var form = document.forms[0];
+				    var params = "title="+escape(document.getElementById('title').value)+"&body="+encodeURIComponent(document.getElementById('body').value)+"&filter_type="+document.getElementById('filter_type').value;
+						new Ajax.Request('/machina_web/zootPage/render',{
+							method:"post",
+							asynchronous:true,
+							evalScripts:true,
+							parameters:params,
+							onSuccess:function(transport) {
+								document.getElementById('preview').update(transport.responseText);
+							}
+
+						});
+					}
+				</script>
     </head>
     <body>
         <div class="nav">
@@ -38,6 +55,10 @@
 								<li>${it.toString()}</li>
 							</g:each>
 						</ul>
+						<input type="button" value="Preview" name="preview" onclick="pw();"/>
+						<object id="preview" type="text/html">
+							
+						</object>
         </div>
     </body>
 </html>
