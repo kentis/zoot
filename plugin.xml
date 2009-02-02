@@ -7,8 +7,10 @@
   <resources>
     <resource>ZootPage</resource>
     <resource>ZootPageRevision</resource>
+    <resource>ZootService</resource>
     <resource>UrlMappings</resource>
     <resource>DataSource</resource>
+    <resource>RevisionsController</resource>
     <resource>ZootPageController</resource>
   </resources>
 </plugin>

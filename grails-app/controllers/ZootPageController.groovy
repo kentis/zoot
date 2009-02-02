@@ -9,7 +9,8 @@ import no.machina.zoot.converters.XML
 
 class ZootPageController {
 		def authenticationService
-    def groovyPagesTemplateEngine
+    //def groovyPagesTemplateEngine
+		def zootService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -29,12 +30,7 @@ class ZootPageController {
 
     def list = {
 				def root = ZootPage.getRoot()
-				println "list: children: ${root.children.size()}"
 				def childsOfRoot = ZootPage.findAllByParent(root)
-				println "list: childs of root: ${childsOfRoot.size()}"
-				childsOfRoot.each{
-						println "\t${it.id}\t${it.title}\t${it.parent.id}"
-				}
 	      withFormat{
 					xhtml{
 						return (root ? [ zootPageList: [root] ] :   [ zootPageList: [] ])
@@ -90,29 +86,20 @@ class ZootPageController {
 						render "Zoot page not found for path ${params.path}"
         }
         else {
-					render(view: "generic_page", model: [title: zootPage.title, body: renderBody(zootPage.body, zootPage.title, zootPage.filter_type,  groovyPagesTemplateEngine, zootPage), page: zootPage, root: ZootPage.getRoot()] )
+					render(view: "generic_page", model: [title: zootPage.title, body: zootService.renderBody(zootPage.body, zootPage.title, zootPage.filter_type, zootPage), page: zootPage, root: ZootPage.getRoot()] )
 				}
     }
 
 		def render = {
-			render(view: "generic_page", model: [title: params.title, body: renderBody( params.body, params.title, params.filter_type,  groovyPagesTemplateEngine), page: null, root: ZootPage.getRoot()] )
+			render(view: "generic_page", model: [title: params.title, body: zootService.renderBody( params.body, params.title, params.filter_type ), page: null, root: ZootPage.getRoot()] )
 		}
 
-		String renderBody(String body, String title, String type, Object templEngine, ZootPage zootPage = null){
-			switch(type) {
-				case "gsp":
-					Template templ = templEngine.createTemplate(body, title);
-					StringWriter writer = new StringWriter();
-					templ.make([page: zootPage, root: ZootPage.getRoot()]).writeTo(writer);
-					return writer.toString()
-					break
-				case "html":
-						return  body
-				case "markdown":
-					return new MarkdownProcessor().markdown(body)
-					break
-				}
-				return null
+		def revisions = {
+			def zootPage = ZootPage.get(params.id)
+			def currentRevision = zootService.renderBody(zootPage.body, zootPage.title, zootPage.filter_type, zootPage);
+			def revisionPage = ZootPageRevision.get(params.revision_id)
+			def revision = zootService.renderBody(revisionPage.body, revisionPage.title, revisionPage.filter_type, zootPage);
+			return [title: zootPage.title, currentRevision: currentRevision, revision: revision, page: zootPage, root: ZootPage.getRoot()]
 		}
 
     def delete = {
