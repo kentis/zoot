@@ -37,9 +37,8 @@ class ZootPageRevision {
 		this.revisionCreated = orig.lastUpdated
 		this.zootPage = orig
 	}
-	
-	public String toString() {
-		"Revision from ${revisionCreated}"
+
+	String toString() {
+		"Revision from ${this.revisionCreated}"
 	}
-	
 }

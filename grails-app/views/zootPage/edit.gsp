@@ -51,8 +51,8 @@
             </g:form>
 						<h2>Previous revisions</h2>
 						<ul class="revisions">
-							<g:each in="${zootPage.revisions}">
-								<li>${it.toString()}</li>
+							<g:each in="${zootPage.revisions}" var="revision">
+								<li><g:link action="diff" controller="revisions" id="${revision.id}">${revision.toString()}</g:link></li>
 							</g:each>
 						</ul>
 						<input type="button" value="Preview" name="preview" onclick="pw();"/>

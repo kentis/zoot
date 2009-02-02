@@ -53,9 +53,9 @@ class ZootPageController {
 					def page = new ZootPage()
 					def xml = new XmlParser().parseText(request.getFile('file').inputStream.text)
 					ZootPage.xmlToPageTree(xml, page)
-					println page
-					println page.children
-					println page.validate()
+					//println page
+					//println page.children
+					//println page.validate()
 					page.parent = ZootPage.getRoot()
 					if(! page.save() ) {
 						page.errors.each {
@@ -117,19 +117,19 @@ class ZootPageController {
 
     def edit = {
         def zootPage = ZootPage.get( params.id )
-				println zootPage.revisions
+				//println zootPage.revisions
         if(!zootPage) {
             flash.message = "ZootPage not found with id ${params.id}"
             redirect(action:list)
         }
         else {
-						println "body: ${zootPage.body}"
+						//println "body: ${zootPage.body}"
             return [ zootPage : zootPage ]
         }
     }
 
     def update = {
-				println "updating page: ${params}"
+				//println "updating page: ${params}"
         def zootPage = ZootPage.get( params.id )
         if(zootPage) {
 						def revision = new ZootPageRevision(zootPage)
