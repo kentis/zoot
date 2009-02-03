@@ -1,5 +1,5 @@
 class ZootPage {
-	static final filters = ["gsp","markdown"]
+ static final filters = ["gsp","markdown"]
  //String full_path --nyi
  String title
  String slug
@@ -62,7 +62,7 @@ class ZootPage {
 	}
 	
 	String toPath() {
-		if(parent) return "${parent.toPath()}/slug"
+		if(parent) return "${parent.toPath()}/${slug}"
 		return "$slug"
 	}
 
