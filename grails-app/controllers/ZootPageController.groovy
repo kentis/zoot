@@ -30,7 +30,7 @@ class ZootPageController {
 
     def list = {
 				def root = ZootPage.getRoot()
-				def childsOfRoot = ZootPage.findAllByParent(root)
+				//def childsOfRoot = ZootPage.findAllByParent(root)
 	      withFormat{
 					xhtml{
 						return (root ? [ zootPageList: [root] ] :   [ zootPageList: [] ])
@@ -43,6 +43,24 @@ class ZootPageController {
 					}
 				}
     }
+
+		def reorder = {
+			switch(request.method){
+				case "POST":
+					def subject = ZootPage.get(params.subject)
+					switch(params.cmd){
+						case "up":
+							subject.move_up()
+							break
+						case "down":
+							subject.move_down()
+							break
+					}
+					redirect(action:reorder, id: params.id)
+				break
+			}
+			[page: ZootPage.get(params.id)]
+		}
 
 		def imp = {
 			switch(request.method){

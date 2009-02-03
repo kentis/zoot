@@ -128,7 +128,7 @@ grails-app.domain</FONT>
   
     <TR BGCOLOR="white" CLASS="TableRowColor">
     <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-    <CODE><!--todo visibility e.g. protected--> &nbsp;Set</CODE></FONT></TD>
+    <CODE><!--todo visibility e.g. protected--> &nbsp;List</CODE></FONT></TD>
     <TD><CODE><B><A HREF="#children">children</A></B></CODE>
 
     <BR>
@@ -236,6 +236,15 @@ grails-app.domain</FONT>
   
     <TR BGCOLOR="white" CLASS="TableRowColor">
     <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+    <CODE><!--todo visibility e.g. protected--> &nbsp;Long</CODE></FONT></TD>
+    <TD><CODE><B><A HREF="#pos">pos</A></B></CODE>
+
+    <BR>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+    </TR>
+  
+    <TR BGCOLOR="white" CLASS="TableRowColor">
+    <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
     <CODE><!--todo visibility e.g. protected--> &nbsp;String</CODE></FONT></TD>
     <TD><CODE><B><A HREF="#slug">slug</A></B></CODE>
 
@@ -302,7 +311,7 @@ grails-app.domain</FONT>
     <TD><FONT CLASS="ClassItemFont"><CODE><B><a href="#findPageByPath(def, def)">findPageByPath</a></B>(def path, def parentPage)</CODE></FONT>
 
     <BR>
-    <FONT CLASS="ClassItemFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; utlitiy mehtods *</FONT>
+    <FONT CLASS="ClassItemFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
     </TD>
   </TR>
 
@@ -322,11 +331,47 @@ grails-app.domain</FONT>
 
   <TR BGCOLOR="white" CLASS="TableRowColor">
     <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1" CLASS="ClassItemFont">
+    <CODE>def</CODE></FONT></TD>
+    <TD><FONT CLASS="ClassItemFont"><CODE><B><a href="#move_down()">move_down</a></B>()</CODE></FONT>
+
+    <BR>
+    <FONT CLASS="ClassItemFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+    </TD>
+  </TR>
+
+
+
+  <TR BGCOLOR="white" CLASS="TableRowColor">
+    <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1" CLASS="ClassItemFont">
+    <CODE>def</CODE></FONT></TD>
+    <TD><FONT CLASS="ClassItemFont"><CODE><B><a href="#move_up()">move_up</a></B>()</CODE></FONT>
+
+    <BR>
+    <FONT CLASS="ClassItemFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+    </TD>
+  </TR>
+
+
+
+  <TR BGCOLOR="white" CLASS="TableRowColor">
+    <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1" CLASS="ClassItemFont">
     <CODE>void</CODE></FONT></TD>
     <TD><FONT CLASS="ClassItemFont"><CODE><B><a href="#saveTheChildren()">saveTheChildren</a></B>()</CODE></FONT>
 
     <BR>
     <FONT CLASS="ClassItemFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+    </TD>
+  </TR>
+
+
+
+  <TR BGCOLOR="white" CLASS="TableRowColor">
+    <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1" CLASS="ClassItemFont">
+    <CODE>def</CODE></FONT></TD>
+    <TD><FONT CLASS="ClassItemFont"><CODE><B><a href="#set_last()">set_last</a></B>()</CODE></FONT>
+
+    <BR>
+    <FONT CLASS="ClassItemFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; utlitiy mehtods </FONT>
     </TD>
   </TR>
 
@@ -427,7 +472,7 @@ findPageByPath</H3>
 <PRE>public static <a href="../../grails-app/domain/ZootPage.html">ZootPage</a> <B>findPageByPath</B>(def path, def parentPage)</PRE>
 
 <DL>
-<DD> utlitiy mehtods *
+<DD>
 <P>
 <DD><DL>
 </DL>
@@ -456,12 +501,63 @@ getRoot</H3>
 </DL>
 <HR>
 
+<A NAME="move_down()"><!-- --></A><H3>
+move_down</H3>
+<PRE>public def <B>move_down</B>()</PRE>
+
+<DL>
+<DD>
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B><!--todo Returns:--></B><DD><!-- todo --></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="move_up()"><!-- --></A><H3>
+move_up</H3>
+<PRE>public def <B>move_up</B>()</PRE>
+
+<DL>
+<DD>
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B><!--todo Returns:--></B><DD><!-- todo --></DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="saveTheChildren()"><!-- --></A><H3>
 saveTheChildren</H3>
 <PRE>void <B>saveTheChildren</B>()</PRE>
 
 <DL>
 <DD>
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B><!--todo Returns:--></B><DD><!-- todo --></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="set_last()"><!-- --></A><H3>
+set_last</H3>
+<PRE>public def <B>set_last</B>()</PRE>
+
+<DL>
+<DD> utlitiy mehtods 
 <P>
 <DD><DL>
 </DL>

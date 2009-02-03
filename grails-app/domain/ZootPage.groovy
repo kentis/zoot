@@ -8,11 +8,11 @@ class ZootPage {
  String body
  String filter_type = "gsp"
  String author
- // Long _position = 0 --nyi
+ Long pos
  // Long current_version  -- versions not yet supported.
  Date dateCreated
  Date lastUpdated
- Set children
+ List children
 
 
  /** hierarcical */
@@ -28,19 +28,48 @@ class ZootPage {
 							ingres(nullable:true)
 							body(nullable:true)
 							filter_type(inList: ZootPage.filters)
-							//id(unique: true, nullable: false)
 					} 
+
 
 	/**
 	* terrible hack to resolve problems that seem to be a bug in the handleing og hasMany.
 	* This will hopefully not be nessesary anymore in grail 1.1
 	*/
 	def onLoad = {
-		this.children = ZootPage.findAllByParent(this)
+		this.children = ZootPage.findAllByParent(this,[sort: "pos", order: "asc"])
 	}
 
 
-	/*** utlitiy mehtods **/
+	/** utlitiy mehtods */
+
+	def set_last(){
+		def last_position = ZootPage.executeQuery("select max(pos) from ZootPage p where parent = :parent", [parent: parent])
+		this.pos = last_pos + 1
+		this.save()
+	}
+	
+	def move_up(){
+		def over = ZootPage.findByPosAndParent(this.pos - 1, this.parent)
+		if(over){
+			over.pos = this.pos
+			this.pos = this.pos - 1
+			over.save()
+			this.save()
+		}
+		
+	}
+		
+	def move_down(){
+		def under = ZootPage.findByPosAndParent(this.pos + 1, this.parent)
+		if(under){
+			under.pos = this.pos
+			this.pos = this.pos + 1
+			under.save()
+			this.save()
+		}
+		
+	}
+
  static ZootPage findPageByPath(path, parentPage = ZootPage.getRoot() ){
 		if(parentPage == null) return null
 		println("looking for  ${path} under ${parentPage.title}")
@@ -76,7 +105,7 @@ class ZootPage {
 			it.parent = this
 			if(! it.save() ) {
 				println "error saving ${it.title}"
-        page.errors.each { err ->
+        it.errors.each { err ->
          	println err
       	}
       }
@@ -115,6 +144,9 @@ class ZootPage {
 						break
 					case 'java.util.Date':
 						this."${it.name()}" = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(it.text())
+						break
+					case 'java.lang.Long':
+						this."${it.name()}" = Long.parseLong(it.text())
 						break
 					default:
 						throw new RuntimeException("Dont know how to update an attribute of type :${this.metaClass.getMetaProperty(it.name()).type.getName()}")
