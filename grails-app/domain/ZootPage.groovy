@@ -48,6 +48,10 @@ class ZootPage {
 		this.save()
 	}
 	
+
+	/**
+	*Changes the position of this page with the page above
+	*/
 	def move_up(){
 		def over = ZootPage.findByPosAndParent(this.pos - 1, this.parent)
 		if(over){
@@ -58,7 +62,10 @@ class ZootPage {
 		}
 		
 	}
-		
+
+	/**
+	*Changes the position of this page with the page below
+	*/
 	def move_down(){
 		def under = ZootPage.findByPosAndParent(this.pos + 1, this.parent)
 		if(under){
