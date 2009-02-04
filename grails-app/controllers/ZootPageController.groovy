@@ -67,13 +67,9 @@ class ZootPageController {
 				case "GET":
 				break
 				case "POST":
-					//request.content = request.getFile('file').inputStream.text.bytes
 					def page = new ZootPage()
 					def xml = new XmlParser().parseText(request.getFile('file').inputStream.text)
 					ZootPage.xmlToPageTree(xml, page)
-					//println page
-					//println page.children
-					//println page.validate()
 					page.parent = ZootPage.getRoot()
 					if(! page.save() ) {
 						page.errors.each {
@@ -81,12 +77,6 @@ class ZootPageController {
 						}
 					}
 					page.saveTheChildren()
-					//def xml = XmlSlurper.parseText(request.getFile('file').inputStream.text)
-					//println xml
-					println "save ${page.title} with ${page.children.size()} children"
-					page.children.each{
-						println "\t${it.id}\t${it.title}\t${it.parent.id}"
-					}
 					redirect(action:list)
 				break
 				

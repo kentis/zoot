@@ -58,6 +58,44 @@ class ZootPageControllerTests extends GroovyTestCase {
     assertEquals 1, ZootPage.findByTitle("p3").pos
 	}
 		
+	
+	void testImp() {
+		def xmlString = """<?xml version="1.0" encoding="UTF-8"?>
+			<zootPage id=\"1\">
+		  <author>kent</author>
+		  <body>this page is intentionally left blank</body>
+		  <dateCreated>2009-02-03 19:15:25.06</dateCreated>
+		  <filter__type>gsp</filter__type>
+		  <ingres/>
+		  <keywords>root</keywords>
+		  <lastUpdated>2009-02-03 19:15:25.06</lastUpdated>
+		  <parent>
+			  <null/>
+		  </parent>
+		  <pos>1</pos>
+		  <revisions/>
+		  <slug>root</slug>
+		  <title>no content</title>
+		  <children/>
+			</zootPage>"""
+		def request = new org.springframework.mock.web.MockMultipartHttpServletRequest();
+		def file = new org.springframework.mock.web.MockMultipartFile("file", xmlString.bytes);
+		request.addFile file
+		request.method = "POST"
+		ZootPageController.metaClass.getRequest = {-> request }
+		def controller = new ZootPageController()
+		assertNull ZootPage.getRoot()
+		controller.imp()
+		assertNotNull ZootPage.getRoot()
+	}
+
+
+
+
+
+
+
+
 	private void createSimplePageStructure() {
     def p1 = new ZootPage(title:"p1", author:"meg", pos: 1)
     if( !p1.save() ) {
