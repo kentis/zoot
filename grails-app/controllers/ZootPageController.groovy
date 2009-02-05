@@ -18,6 +18,7 @@ class ZootPageController {
 		def beforeInterceptor = [action:this.&auth,except:'show']
 		def afterInterceptor = { model ->
 			model["root"] = ZootPage.getRoot()
+			model["filters"] = zootService.getAvailableFilters()
 		}
 	
 		def auth() {
@@ -165,6 +166,7 @@ class ZootPageController {
 
     def save = {
         def zootPage = new ZootPage(params)
+				zootPage.set_last()
         if(!zootPage.hasErrors() && zootPage.save()) {
             flash.message = "ZootPage ${zootPage.id} created"
             redirect(action:list)

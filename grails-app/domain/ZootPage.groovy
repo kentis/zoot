@@ -1,5 +1,5 @@
 class ZootPage {
- static final filters = ["gsp","markdown"]
+ static final filters = ["gsp","markdown","wysiwyg html"]
  //String full_path --nyi
  String title
  String slug
@@ -27,7 +27,7 @@ class ZootPage {
 							keywords(nullable: true)
 							ingres(nullable:true)
 							body(nullable:true)
-							filter_type(inList: ZootPage.filters)
+							filter_type(inList: filters)
 					} 
 
 
@@ -43,8 +43,14 @@ class ZootPage {
 	/** utlitiy mehtods */
 
 	def set_last(){
-		def last_position = ZootPage.executeQuery("select max(pos) from ZootPage p where parent = :parent", [parent: parent])
-		this.pos = last_pos + 1
+		def last_position
+		if(parent){
+			last_position = ZootPage.executeQuery("select max(pos) from ZootPage p where parent = :parent", [parent: parent])
+		}else{
+			last_position = ZootPage.executeQuery("select max(pos) from ZootPage p where parent is null")
+		}
+		if(!last_position || ! (last_position instanceof Number) ) last_position = 0
+		this.pos = last_position + 1
 		this.save()
 	}
 	

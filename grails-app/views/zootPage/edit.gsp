@@ -9,7 +9,14 @@
 				<script type="text/javascript">
 					function pw() {
 						var form = document.forms[0];
-				    var params = "title="+escape(document.getElementById('title').value)+"&body="+encodeURIComponent(document.getElementById('body').value)+"&filter_type="+document.getElementById('filter_type').value;
+						var body = "";
+						if("${zootPage.filter_type}" == "wysiwyg html"){
+							var oEditor = FCKeditorAPI.GetInstance('body');
+							body = encodeURIComponent(oEditor.GetHTML(true));
+						}else {
+							body= encodeURIComponent(document.getElementById('body').value);
+						}
+				    var params = "title="+escape(document.getElementById('title').value)+"&body="+body+"&filter_type="+document.getElementById('filter_type').value;
 						new Ajax.Request('/machina_web/zootPage/render',{
 							method:"post",
 							asynchronous:true,
@@ -18,7 +25,7 @@
 							onSuccess:function(transport) {
 								document.getElementById('preview').update(transport.responseText);
 							}
-
+						
 						});
 					}
 				</script>

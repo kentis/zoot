@@ -3,6 +3,7 @@ import groovy.text.Template
 import com.petebevin.markdown.MarkdownProcessor
 
 class ZootService {
+		def grailsApplication
 		def groovyPagesTemplateEngine
     boolean transactional = true
 
@@ -14,6 +15,7 @@ class ZootService {
           templ.make([page: zootPage, root: ZootPage.getRoot()]).writeTo(writer);
           return writer.toString()
           break
+				case "wysiwyg html":
         case "html":
             return  body
         case "markdown":
@@ -23,4 +25,15 @@ class ZootService {
         return null
     }
 
+	boolean fckEditorExists() {
+		grailsApplication.getArtefact("Controller", "FckeditorController") != null
+	}
+
+	def getAvailableFilters() {
+		def filters = ["gsp","markdown"]
+		if(fckEditorExists()){
+			filters << "wysiwyg html"
+		}
+		filters
+	}
 }

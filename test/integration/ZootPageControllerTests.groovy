@@ -89,11 +89,13 @@ class ZootPageControllerTests extends GroovyTestCase {
 		assertNotNull ZootPage.getRoot()
 	}
 
-
-
-
-
-
+	void testSave() {
+		assertNull ZootPage.getRoot()
+		ZootPageController.metaClass.getParams = {-> [title:"fdsf", slug:"fdsf", author:"meg", body: "hei", filter_type: "gsp"]}
+		def controller = new ZootPageController()
+		controller.save()
+		assertNotNull ZootPage.getRoot()
+	}
 
 
 	private void createSimplePageStructure() {

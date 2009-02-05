@@ -55,7 +55,20 @@
                                     <label for="body">Body:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:zootPage,field:'body','errors')}">
-                                    <g:textArea id="body" name="body" rows="80" cols="60" value="${zootPage.body}" />
+                                    <g:if test="${zootPage?.filter_type == 'wysiwyg html'}">
+																			<fckeditor:editor
+																				id="body"
+																		    name="body"
+																		    width="100%"
+																		    height="400"
+																		    toolbar="Standard"
+																		    fileBrowser="default">
+																				${zootPage.body}
+																				</fckeditor:editor>
+																		</g:if>
+																		<g:else>
+																			<g:textArea id="body" name="body" rows="80" cols="60" value="${zootPage.body}" />
+																		</g:else>
                                 </td>
                             </tr> 
                         
@@ -64,7 +77,7 @@
                                     <label for="filter_type">Filtertype:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:zootPage,field:'filter_type','errors')}">
-																		<g:select from="${ZootPage.filters}" name="filter_type" value="${zootPage.filter_type}"></g:select>
+																		<g:select from="${filters}" name="filter_type" value="${zootPage.filter_type}"></g:select>
                                 </td>
                             </tr> 
 
