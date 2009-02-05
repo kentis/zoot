@@ -1,13 +1,13 @@
 class ZootGrailsPlugin {
-    def version = 0.1
+    def version = 0.5
     def dependsOn = [:]
 
     // TODO Fill in these fields
-    def author = "Your name"
-    def authorEmail = ""
-    def title = "Plugin summary/headline"
+    def author = "Machina Networks AS"
+    def authorEmail = "kent@machina.no"
+    def title = "Zoot"
     def description = '''\
-Brief description of the plugin.
+A cms plugin for grails.
 '''
 
     // URL to the plugin's documentation
