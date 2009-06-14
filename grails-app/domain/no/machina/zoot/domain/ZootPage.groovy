@@ -1,3 +1,5 @@
+package no.machina.zoot.domain
+
 class ZootPage {
  static final filters = ["gsp","markdown","wysiwyg html"]
  //String full_path --nyi

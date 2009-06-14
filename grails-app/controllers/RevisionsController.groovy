@@ -1,3 +1,5 @@
+import no.machina.zoot.domain.*
+
 class RevisionsController {
 	def zootService
 	def show = {

@@ -1,3 +1,5 @@
+package no.machina.zoot.domain
+
 class ZootPageRevision {
  
  String title

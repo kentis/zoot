@@ -5,7 +5,10 @@ import org.codehaus.groovy.grails.web.pages.GSPResponseWriter
 import org.springframework.web.context.request.RequestContextHolder
 import com.petebevin.markdown.MarkdownProcessor
 import grails.converters.deep.JSON
-import no.machina.zoot.converters.XML
+import grails.converters.deep.XML
+
+//import no.machina.zoot.converters.XML
+import no.machina.zoot.domain.*
 
 class ZootPageController {
 		def authenticationService
@@ -31,7 +34,6 @@ class ZootPageController {
 
     def list = {
 				def root = ZootPage.getRoot()
-				//def childsOfRoot = ZootPage.findAllByParent(root)
 	      withFormat{
 					xhtml{
 						return (root ? [ zootPageList: [root] ] :   [ zootPageList: [] ])
@@ -57,7 +59,7 @@ class ZootPageController {
 							subject.move_down()
 							break
 					}
-					redirect(action:reorder, id: params.id)
+					redirect(controller: "zootPage", action: "reorder", id: params.id)
 				break
 			}
 			[page: ZootPage.get(params.id)]
@@ -78,9 +80,8 @@ class ZootPageController {
 						}
 					}
 					page.saveTheChildren()
-					redirect(action:list)
+					redirect(controller: "zootPage", action:list)
 				break
-				
 			}
 		}
 
@@ -126,19 +127,16 @@ class ZootPageController {
 
     def edit = {
         def zootPage = ZootPage.get( params.id )
-				//println zootPage.revisions
         if(!zootPage) {
             flash.message = "ZootPage not found with id ${params.id}"
             redirect(action:list)
         }
         else {
-						//println "body: ${zootPage.body}"
             return [ zootPage : zootPage ]
         }
     }
 
     def update = {
-				//println "updating page: ${params}"
         def zootPage = ZootPage.get( params.id )
         if(zootPage) {
 						def revision = new ZootPageRevision(zootPage)
@@ -154,7 +152,7 @@ class ZootPageController {
         }
         else {
             flash.message = "ZootPage not found with id ${params.id}"
-            redirect(action:edit,id:params.id)
+            redirect(controller: 'zootPage', action:edit,id:params.id)
         }
     }
 
@@ -169,7 +167,7 @@ class ZootPageController {
 				zootPage.set_last()
         if(!zootPage.hasErrors() && zootPage.save()) {
             flash.message = "ZootPage ${zootPage.id} created"
-            redirect(action:list)
+            redirect(controller: 'zootPage', action:list)
         }
         else {
             render(view:'create',model:[zootPage:zootPage])

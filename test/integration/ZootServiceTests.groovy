@@ -1,11 +1,14 @@
 class ZootServiceTests extends GroovyTestCase {
 
 	void testAvailableFilters(){
-		ZootService.metaClass.fckEditorExists = {-> false }
-		assertEquals(["gsp","markdown"], new ZootService().getAvailableFilters())
+		ZootService service = new ZootService()
+		service.metaClass.fckEditorExists = { -> return false }
+		assertEquals(["gsp","markdown"], service.getAvailableFilters())
+
+		service = new ZootService()
+		service.metaClass.fckEditorExists = { -> return true }
 		
-		ZootService.metaClass.fckEditorExists = {-> true }
-		assertEquals(["gsp","markdown", "wysiwyg html"], new ZootService().getAvailableFilters())
+		assertEquals(["gsp","markdown", "wysiwyg html"], service.getAvailableFilters())
 	}
 
 }

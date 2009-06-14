@@ -1,7 +1,11 @@
 import grails.converters.*
+import no.machina.zoot.domain.*
+
 class ZootPageTests extends GroovyTestCase {
-
-
+	
+//	void testFail(){
+	//	fail "failed"
+//	}
 
 	void testFindPageByPath(){
 		def p1 = new ZootPage(title:"p1", author:"meg",pos:1)

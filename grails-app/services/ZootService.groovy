@@ -1,6 +1,7 @@
 import org.codehaus.groovy.grails.web.pages.GroovyPagesTemplateEngine
 import groovy.text.Template
 import com.petebevin.markdown.MarkdownProcessor
+import no.machina.zoot.domain.*
 
 class ZootService {
 		def grailsApplication
@@ -24,16 +25,17 @@ class ZootService {
         }
         return null
     }
-
+          
 	boolean fckEditorExists() {
 		grailsApplication.getArtefact("Controller", "FckeditorController") != null
 	}
 
 	def getAvailableFilters() {
+		println("fckEditorExists: ${this.fckEditorExists()}")
 		def filters = ["gsp","markdown"]
 		if(fckEditorExists()){
 			filters << "wysiwyg html"
 		}
-		filters
+		return filters
 	}
 }

@@ -1,16 +1,18 @@
-<plugin name='zoot' version='0.1'>
-  <author>Your name</author>
-  <title>Plugin summary/headline</title>
-  <description>Brief description of the plugin.
+<plugin name='zoot' version='0.5' grailsVersion='1.1 &gt; *'>
+  <author>Machina Networks AS</author>
+  <authorEmail>kent@machina.no</authorEmail>
+  <title>Zoot</title>
+  <description>A cms plugin for grails.
 </description>
   <documentation>http://grails.org/Zoot+Plugin</documentation>
   <resources>
-    <resource>ZootPage</resource>
-    <resource>ZootPageRevision</resource>
+    <resource>no.machina.zoot.domain.ZootPage</resource>
+    <resource>no.machina.zoot.domain.ZootPageRevision</resource>
     <resource>ZootService</resource>
     <resource>UrlMappings</resource>
     <resource>DataSource</resource>
     <resource>RevisionsController</resource>
     <resource>ZootPageController</resource>
   </resources>
+  <dependencies />
 </plugin>
