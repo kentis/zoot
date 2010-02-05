@@ -1,4 +1,5 @@
 package no.machina.zoot.domain
+import groovy.xml.MarkupBuilder
 
 class ZootPage {
  static final filters = ["gsp","markdown","wysiwyg html"]
@@ -19,10 +20,10 @@ class ZootPage {
 
  /** hierarcical */
  ZootPage parent 
- static hasMany = [ revisions: ZootPageRevision] 
- static transients = [ "children" ]
+ static hasMany = [ revisions: ZootPageRevision, children: ZootPage] 
+ //static transients = [ "children" ]
 
- static fetchMode = [children:"eager"]
+ //static fetchMode = [children:"eager"]
  static constraints = { 
 							parent(nullable: true) 
 							slug(nullable:true)
@@ -37,9 +38,9 @@ class ZootPage {
 	* terrible hack to resolve problems that seem to be a bug in the handleing og hasMany.
 	* This will hopefully not be nessesary anymore in grail 1.1
 	*/
-	def onLoad = {
-		this.children = ZootPage.findAllByParent(this,[sort: "pos", order: "asc"])
-	}
+//	def onLoad = {
+//		this.children = ZootPage.findAllByParent(this,[sort: "pos", order: "asc"])
+//	}
 
 
 	/** utlitiy mehtods */
@@ -167,6 +168,33 @@ class ZootPage {
 						throw new RuntimeException("Dont know how to update an attribute of type :${this.metaClass.getMetaProperty(it.name()).type.getName()}")
 				}
 			}	
+		}
+	}
+
+	String toXML() {
+		def writer = new StringWriter()
+		def xml = new MarkupBuilder(writer)
+		_toXML(xml, this)
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n${writer.toString()}"
+	}
+	
+	void _toXML(xml, page){
+		xml.zootPage(id: page.id){
+			xml.author(page.author)
+			xml.body(page.body)
+			xml.dateCreated(page.dateCreated.toString())
+			xml.filter_type(page.filter_type)
+			if(page.ingres) xml.ingres(page.ingres)
+			if(page.keywords) xml.keywords(page.keywords)
+			xml.lastUpdated(page.lastUpdated.toString())
+			xml.pos(page.pos.toString())
+			if(page.slug) xml.slug(page.slug)
+			if(page.title) xml.title(page.title)
+			xml.children(){
+				page.children.each{ child ->
+					_toXML(xml, child)
+				}
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-<plugin name='zoot' version='0.5' grailsVersion='1.1 &gt; *'>
+<plugin name='zoot' version='0.5' grailsVersion='1.1.1 &gt; *'>
   <author>Machina Networks AS</author>
   <authorEmail>kent@machina.no</authorEmail>
   <title>Zoot</title>

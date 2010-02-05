@@ -27,7 +27,8 @@ class ZootService {
     }
           
 	boolean fckEditorExists() {
-		grailsApplication.getArtefact("Controller", "FckeditorController") != null
+		if(org.codehaus.groovy.grails.plugins.GrailsPluginUtils.getMetadataForPlugin("fckeditor") != null) return true
+		return grailsApplication.getArtefact("Controller", "FckeditorController") != null
 	}
 
 	def getAvailableFilters() {

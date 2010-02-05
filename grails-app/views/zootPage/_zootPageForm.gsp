@@ -28,7 +28,7 @@
                                     <label for="parent">Parent:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:zootPage,field:'parent','errors')}">
-                                    <g:select optionKey="id" from="${ZootPage.list()}" name="parent.id" value="${zootPage?.parent?.id}" ></g:select>
+                                    <g:select optionKey="id" from="${no.machina.zoot.domain.ZootPage.list()}" name="parent.id" value="${zootPage?.parent?.id}" ></g:select>
                                 </td>
                             </tr> 
                         		</g:if>

@@ -42,7 +42,7 @@ class ZootPageController {
 						return (root ? [ zootPageList: [root] ] :   [ zootPageList: [] ])
 					}
 					xml{
-						render root as XML
+						render (contentType:"text/xml", text: root.toXML(), encoding:"UTF-8")
 					}
 				}
     }
@@ -165,6 +165,7 @@ class ZootPageController {
     def save = {
         def zootPage = new ZootPage(params)
 				zootPage.set_last()
+				if(zootPage.parent) zootPage.parent.addToChildren(zootPage)
         if(!zootPage.hasErrors() && zootPage.save()) {
             flash.message = "ZootPage ${zootPage.id} created"
             redirect(controller: 'zootPage', action:list)
