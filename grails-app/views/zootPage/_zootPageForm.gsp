@@ -49,6 +49,14 @@
                                     <input type="text" id="title" name="title" value="${fieldValue(bean:zootPage,field:'title')}"/>
                                 </td>
                             </tr> 
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="ingres">Ingres:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:zootPage,field:'ingres','errors')}">
+                                    <g:textArea id="ingres" name="ingres" value="${fieldValue(bean:zootPage,field:'ingres')}"/>
+                                </td>
+                            </tr> 
                         
 														<tr class="prop">
                                 <td valign="top" class="name">
@@ -59,7 +67,7 @@
 																			<fckeditor:editor
 																				id="body"
 																		    name="body"
-																		    width="100%"
+																		    width="640"
 																		    height="400"
 																		    toolbar="Standard"
 																		    fileBrowser="default">
