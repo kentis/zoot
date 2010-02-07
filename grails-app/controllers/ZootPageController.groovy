@@ -18,7 +18,7 @@ class ZootPageController {
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST', render:'POST']
-		def beforeInterceptor = [action:this.&auth,except:'show']
+		def beforeInterceptor = [action:this.&auth,except:['show','login']]
 		def afterInterceptor = { model ->
 			model["root"] = ZootPage.getRoot()
 			model["filters"] = zootService.getAvailableFilters()
@@ -27,9 +27,13 @@ class ZootPageController {
 		def auth() {
 			if(authenticationService) {
 				if (!authenticationService.isLoggedIn(request)) {
-             response.sendError(403)
+             redirect(action: "login")
 	   		}
 			}
+		}
+
+		def login = {
+
 		}
 
     def list = {
