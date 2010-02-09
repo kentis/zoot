@@ -100,12 +100,12 @@ class ZootPageController {
 						render "Zoot page not found for path ${params.path}"
         }
         else {
-					render(view: "generic_page", model: [title: zootPage.title, body: zootService.renderBody(zootPage.body, zootPage.title, zootPage.filter_type, zootPage), page: zootPage, root: ZootPage.getRoot()] )
+					render(view: "generic_page", model: [title: zootPage.title, layout: zootPage.layout, body: zootService.renderBody(zootPage.body, zootPage.title, zootPage.filter_type, zootPage), page: zootPage, root: ZootPage.getRoot()] )
 				}
     }
 
 		def render = {
-			render(view: "generic_page", model: [title: params.title, body: zootService.renderBody( params.body, params.title, params.filter_type ), page: null, root: ZootPage.getRoot()] )
+			render(view: "generic_page", model: [title: params.title, layout: params.layout, body: zootService.renderBody( params.body, params.title, params.filter_type ), page: null, root: ZootPage.getRoot()] )
 		}
 
 		def revisions = {

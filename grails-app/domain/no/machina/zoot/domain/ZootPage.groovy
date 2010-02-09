@@ -11,6 +11,7 @@ class ZootPage {
  String body
  String filter_type = "gsp"
  String author
+ String layout
  Long pos
  // Long current_version  -- versions not yet supported.
  Date dateCreated
@@ -31,6 +32,7 @@ class ZootPage {
 							ingres(nullable:true)
 							body(nullable:true)
 							filter_type(inList: filters)
+							layout(nullable:true)
 					} 
 
 
@@ -190,6 +192,7 @@ class ZootPage {
 			xml.pos(page.pos.toString())
 			if(page.slug) xml.slug(page.slug)
 			if(page.title) xml.title(page.title)
+			if(page.layout) xml.layout(page.layout)
 			xml.children(){
 				page.children.each{ child ->
 					_toXML(xml, child)

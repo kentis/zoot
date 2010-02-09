@@ -79,7 +79,15 @@
 																		</g:else>
                                 </td>
                             </tr> 
-                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="layout">Layout:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:zootPage,field:'layout','errors')}">
+                                    <input type="text" id="layout" name="layout" value="${fieldValue(bean:zootPage,field:'layout')}"/>
+                                </td>
+                            </tr> 
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="filter_type">Filtertype:</label>
