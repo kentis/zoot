@@ -18,6 +18,7 @@ class ZootPage {
  Date lastUpdated
  List children
 
+ Map<String, String> fields
 
  /** hierarcical */
  ZootPage parent 
@@ -35,17 +36,13 @@ class ZootPage {
 							layout(nullable:true)
 					} 
 
-
-	/**
-	* terrible hack to resolve problems that seem to be a bug in the handleing og hasMany.
-	* This will hopefully not be nessesary anymore in grail 1.1
-	*/
-//	def onLoad = {
-//		this.children = ZootPage.findAllByParent(this,[sort: "pos", order: "asc"])
-//	}
+	//allow long bodies
+ 	static mapping = {
+  	body type: 'text'
+	}
 
 
-	/** utlitiy mehtods */
+	/** utlitiy mehtods TODO: move some of these to sevice classes */
 
 	def set_last(){
 		def last_position
@@ -56,7 +53,6 @@ class ZootPage {
 		}
 		if(!last_position || ! (last_position instanceof Number) ) last_position = 0
 		this.pos = last_position + 1
-		this.save()
 	}
 	
 
@@ -142,6 +138,13 @@ class ZootPage {
 					case 'java.lang.String':
 						this."${it.name()}" = it.text()
 						break
+					case 'java.util.Map':
+						def map = [:]
+						it.each { child ->
+							map."${child.name()}" = child.text()
+						}
+						this."${it.name()}" = map
+						break
 					case 'java.util.Set':
 					case 'java.util.List':
 						switch(it.name()) {
@@ -193,11 +196,21 @@ class ZootPage {
 			if(page.slug) xml.slug(page.slug)
 			if(page.title) xml.title(page.title)
 			if(page.layout) xml.layout(page.layout)
+			if(page.fields) addFields(xml, page.fields)
 			xml.children(){
 				page.children.each{ child ->
-					_toXML(xml, child)
+					if(child != null) _toXML(xml, child) 
 				}
 			}
 		}
 	}
+	
+	void addFields(xml, fields){
+		xml.fields{
+			fields.each{ key, value ->
+				xml."${key}"(value)
+			}
+		}	
+	}
+
 }

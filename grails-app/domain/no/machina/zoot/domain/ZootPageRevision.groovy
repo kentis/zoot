@@ -12,6 +12,7 @@ class ZootPageRevision {
  Date dateCreated
  Date lastUpdated
  Date revisionCreated
+ Map<String, String> fields
 
  static belongsTo = [zootPage:ZootPage]
 
@@ -24,6 +25,11 @@ class ZootPageRevision {
 		ingres(nullable:true)
 		filter_type(inList: ZootPage.filters)
 	} 
+
+  //allow long bodies
+  static mapping = {
+   body type: 'text'
+  }
 	
 	public ZootPageRevision(){
 		

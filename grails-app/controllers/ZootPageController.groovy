@@ -17,11 +17,23 @@ class ZootPageController {
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST', render:'POST']
+    static allowedMethods = [delete:'POST', save:'POST', update:'POST', render:'POST']
 		def beforeInterceptor = [action:this.&auth,except:['show','login']]
 		def afterInterceptor = { model ->
-			model["root"] = ZootPage.getRoot()
-			model["filters"] = zootService.getAvailableFilters()
+			try{
+				model["root"] = ZootPage.getRoot()
+				model["filters"] = zootService.getAvailableFilters()
+				model["fields"] = zootService.getAditionalFields()
+			}catch(Exception ex){
+				flash.message = ex.message
+				ex.printStackTrace()
+				while(ex.cause != null){
+					ex = ex.cause
+				}
+				println "Ultimate cause:"
+				ex.printStackTrace()
+				throw ex
+			}
 		}
 	
 		def auth() {
@@ -74,17 +86,27 @@ class ZootPageController {
 				case "GET":
 				break
 				case "POST":
-					def page = new ZootPage()
-					def xml = new XmlParser().parseText(request.getFile('file').inputStream.text)
-					ZootPage.xmlToPageTree(xml, page)
-					page.parent = ZootPage.getRoot()
-					if(! page.save() ) {
-						page.errors.each {
-							println it
+					try{
+						def page = new ZootPage()
+						def xml = new XmlParser().parseText(request.getFile('file').inputStream.text)
+						ZootPage.xmlToPageTree(xml, page)
+						page.parent = ZootPage.getRoot()
+						if(page.hasErrors() || !page.save() ) {
+							page.errors.each {
+								println it
+							}
 						}
+						//page.saveTheChildren()
+						redirect(controller: "zootPage", action:list)
+					}catch(Exception ex){
+						flash.message = ex.message
+						ex.printStackTrace()
+						while(ex.cause != null){
+							ex = ex.cause
+						}
+						println "Ultimate cause:"
+						ex.printStackTrace()
 					}
-					page.saveTheChildren()
-					redirect(controller: "zootPage", action:list)
 				break
 			}
 		}
@@ -145,6 +167,7 @@ class ZootPageController {
         if(zootPage) {
 						def revision = new ZootPageRevision(zootPage)
             zootPage.properties = params
+						zootService.setAditionalFields(params, zootPage)
             if(!zootPage.hasErrors() && zootPage.save()) {
 								revision.save()
                 flash.message = "ZootPage ${params.id} updated"
@@ -161,15 +184,20 @@ class ZootPageController {
     }
 
     def create = {
+				def parent = params.id ? ZootPage.get(params.id) : null
         def zootPage = new ZootPage()
+				zootPage.parent = parent
+				zootPage.slug = zootService.generateSlug(parent)
         zootPage.properties = params
         return ['zootPage':zootPage]
     }
 
     def save = {
         def zootPage = new ZootPage(params)
-				zootPage.set_last()
+				zootService.setAditionalFields(params, zootPage)
 				if(zootPage.parent) zootPage.parent.addToChildren(zootPage)
+				zootPage.set_last()
+
         if(!zootPage.hasErrors() && zootPage.save()) {
             flash.message = "ZootPage ${zootPage.id} created"
             redirect(controller: 'zootPage', action:list)

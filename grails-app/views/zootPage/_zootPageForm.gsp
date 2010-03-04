@@ -96,7 +96,15 @@
 																		<g:select from="${filters}" name="filter_type" value="${zootPage.filter_type}"></g:select>
                                 </td>
                             </tr> 
-
+														<g:each in="${fields}" var="field">
+															<tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="field_${field}">${field}:</label>
+                                </td>
+																<td valign="top" class="value">
+																	<input type="text" id="field_${field}" name="field_${field}" value="${zootPage.fields ? zootPage.fields[field] : ''}"/> 
+                                </td>
+														</g:each>
                         </tbody>
                     </table>
                 </div>

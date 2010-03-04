@@ -1,4 +1,4 @@
-
+<%! import no.machina.zoot.domain.* %>
 
 <html>
     <head>
@@ -22,7 +22,7 @@
             </div>
             </g:hasErrors>
         		<ul>
-							<g:each in="${page.children}" var="child" id="${page.id}">
+							<g:each in="${ZootPage.findAllByParent(page, [order:'asc', sort: 'pos'])}" var="child" id="${page.id}">
 								<h2>${child.title}</h2>
 								<p>
 									<g:form action="reorder" method="post" id="${page.id}" >

@@ -5,6 +5,15 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
         <title>ZootPage List</title>
+				<script src="http://code.jquery.com/jquery-latest.js"></script>
+			  <link rel="stylesheet" href="http://dev.jquery.com/view/trunk/plugins/treeview/demo/screen.css" type="text/css" />
+			  <link rel="stylesheet" href="http://dev.jquery.com/view/trunk/plugins/treeview/jquery.treeview.css" type="text/css" />
+			  <script type="text/javascript" src="http://dev.jquery.com/view/trunk/plugins/treeview/jquery.treeview.js"></script>
+			  <script>
+				  $(document).ready(function(){
+				    $("#page-list").treeview();
+				  });
+			  </script>
     </head>
     <body>
         <div class="nav">
@@ -17,8 +26,8 @@
             <div class="message">${flash.message}</div>
             </g:if>
             <div class="list">
-								<ul class="page-list">
-										<g:render template="zootPage_list" model="[zootPageList: zootPageList]" plugin="zoot"/>
+								<ul id="page-list" class="page-list">
+										<g:render template="zootPage_list" model="[zootPageList: zootPageList, open: true]" plugin="zoot"/>
 								</ul>					
             </div>
         </div>
