@@ -4,6 +4,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
+				<script src="${resource(dir: 'plugins/zoot-0.5/CodeMirror-0.66/js', file: 'codemirror.js')}" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="${resource(dir: 'plugins/zoot-0.5/CodeMirror-0.66/css/', file:'docs.css')}"/>
+        <style type="text/css">
+          .CodeMirror-line-numbers {
+            width: 2.2em;
+            color: #aaa;
+            background-color: #eee;
+            text-align: right;
+            padding-right: .3em;
+            font-size: 10pt;
+            font-family: monospace;
+            padding-top: .4em;
+          }
+        </style>
         <title>Create ZootPage</title>         
     </head>
     <body>

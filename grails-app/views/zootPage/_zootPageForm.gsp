@@ -67,13 +67,27 @@
 																			<fckeditor:editor
 																				id="body"
 																		    name="body"
-																		    width="640"
-																		    height="400"
+																		    width="${grailsApplication.config.zoot.wysiwyg.width ? grailsApplication.config.zoot.wysiwyg.width : 640}"
+																		    height="${grailsApplication.config.zoot.wysiwyg.height ? grailsApplication.config.zoot.wysiwyg.height : 400}"
 																		    toolbar="Standard"
 																		    fileBrowser="default">
 																				${zootPage.body}
 																				</fckeditor:editor>
 																		</g:if>
+																		<g:elseif test="${zootPage == null || zootPage?.filter_type == 'gsp'}">
+																			<g:textArea id="body" name="body" rows="80" cols="60" value="${zootPage.body}" />
+																			<script type="text/javascript">
+																			  var editor = CodeMirror.fromTextArea('body', {
+																			    height: "350px",
+																			    parserfile: "parsexml.js",
+																			    stylesheet: "${resource(dir: 'plugins/zoot-0.5/CodeMirror-0.66/css', file: 'xmlcolors.css')}",
+																			    path: "${resource(dir: 'plugins/zoot-0.5/CodeMirror-0.66/js', file:'/')}",
+																			    continuousScanning: 500,
+																			    lineNumbers: true
+																				});
+																			</script>
+
+																		</g:elseif>
 																		<g:else>
 																			<g:textArea id="body" name="body" rows="80" cols="60" value="${zootPage.body}" />
 																		</g:else>
