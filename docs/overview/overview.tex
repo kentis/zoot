@@ -1,0 +1,88 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{hyperref}
+\usepackage{listings}
+%opening
+\title{Zoot --- design and overview document}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+
+\section{About Zoot}
+
+Zoot is a minimalist cms plugin for Grails partly inspired by Comatose. The name is derived from Monty Pythons Quest for the Holy Grail.
+The goal of zoot is to be able to easaly create a simple CMS with a low level of irritation for developers and users.
+
+Zoot is created as a grails plugin, and not a finished application. This means that in order to use Zoot, one must first create a Grails application and install the Zoot plugin into it.
+
+\section{Page}
+The Page is the central data-class in Zoot. A Page represents a page in the cms and has fields for title, slug (the last part of the URI), keywords ingress body etc.
+
+\subsection{Filters}
+
+Zoot uses the filter\_type field in Page objects to determin how to edit and present the body of a Page. The currently available filter types are:
+
+\begin{itemize}
+ \item gsp --- Raw gsp. This is rendered as if it as a gsp page. Usefull if the page contains logic.
+ \item markdown --- \href{http://en.wikipedia.org/wiki/Markdown}{Markdown} script.
+ \item wysiwyg html --- Wysiwyg editor for html pages. This is available if the fckeditor plugin is installed in the application.
+\end{itemize}
+
+
+\subsection{Sub-pages}
+
+Zoot pages are organized hierachically. Every Zoot-page has one parent and several children. And only one Page may have null as parent. This Page is considred the root Page.
+
+\subsection{Positioning}
+
+Zoot comes with a mechaism for sorting pages under a specific parent using the \texttt{pos} field in Page.
+
+\subsection{Layout}
+
+The layout field determines which layout soulb be used when shoing this page.
+
+\subsection{Revisions}
+
+All ZootPage history is preserved in revisions. These are automatically generated, and pages may be rolled back to any revision.
+
+\subsection{Fields}
+
+Zoot pages can have custom fields. To configure such fields one creates a list of stings which contains the names of the custom fields in Config.groovy like this: \texttt{no.zoot.fields = ["image\_url", "customer"]}.
+
+\subsection{Automatic slug generation}
+
+Slugs can be automatically generated for pages by creating a closeure in Config.groovy tied to \texttt{no.zoot.slugGenerator}. A very simple UUID slug may be implemented like this: 
+
+\begin{lstlisting}
+  no.zoot.slugGenerator = {parent ->
+    return UUID.randomUUID().toString()
+  }
+\end{lstlisting}
+
+
+\section{User authentication}
+
+Zoot does not have a user authentication system (it is minimalistic after all). However zoot will detect if the ``authenticate''? plugin is intalled, and if so authentication will be enabled.
+
+\section{Backup of Zoot system}
+
+To back up a zoot one can simply append \texttt{.xml} to the list action in the ZootPage controller. This can be done wit a simple curl script.
+
+Example curl script without authentication:
+\begin{lstlisting}
+ curl -L -d "http://zootApplication/zootPage/list.xml" >\\
+ /var/backup/zoot/list.xml
+\end{lstlisting}
+
+Example curl script with authentication:
+\begin{lstlisting}
+ curl -c /tmp/cookies -L -d \\
+"success_controller=zootPage&success_action=list.xml&\\
+ login=zoot&password=zoot&errorController=zootPage&error_action=login"\\
+ "http://zootApplication/authentication/login" > /var/backup/zoot/list.xml
+\end{lstlisting}
+
+\end{document}
